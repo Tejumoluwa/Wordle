@@ -13,7 +13,7 @@ public class GuiWordle extends JFrame implements ActionListener {
     private JLabel wordle, clues, words, word, guess1, guess2, guess3, guess4, guess5, guess6;
     private JButton a, b, c, d, e,f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, enter, delete;
 
-    String[] arr_words = {"CABIN", "EAGER", "HABIT", "LABOR", "SOBER"};
+    String[] arr_words = {"CABIN", "EAGER", "HABIT", "LABOR", "SOBER", "OTHER", "STRAP", "AMBLE", "DRUNK", "LUNCH", "MAYBE", "EVERY", "ENTER" };
     StringBuffer str_word;
     int lives = 6, rnd, index =0;
     Random rd;
@@ -156,7 +156,7 @@ public class GuiWordle extends JFrame implements ActionListener {
         word_guessed.add(guess6);
 
         rd = new Random();
-        rnd = rd.nextInt(5);
+        rnd = rd.nextInt(arr_words.length);
         str_word = new StringBuffer();
         hiddenWord = arr_words[rnd];
 
@@ -216,60 +216,73 @@ public class GuiWordle extends JFrame implements ActionListener {
             str_word.append("_  ");
         }
         word.setText(str_word.toString());
-        System.out.println(hiddenWord);
     }
 
     public void actionPerformed(ActionEvent e) {
         String letter = e.getActionCommand();
         delete.setEnabled(true);
-        if(e.getActionCommand().equals("DELETE")){
-            begin--;
-            str_word.replace((begin*3), ((begin * 3) + 1), "_");
-        } else if (e.getActionCommand().equals("ENTER")) {
-            String str = str_word.toString();
-            str = str.replace(" ", "");
-            System.out.println(str.length());
-            if (hiddenWord.equals(str)) {
-                JOptionPane.showMessageDialog(this, "Congrats you guessed the word");
-                JOptionPane.showConfirmDialog(this, "Do you want to exit the game","OPTION", JOptionPane.YES_NO_OPTION);
-                if(JOptionPane.YES_OPTION == 0){
-                    System.exit(0);
-                }else{
-                    GuiWordle wordle = new GuiWordle();
-                    wordle.playGame();
+        if(index != 6) {
+            if (e.getActionCommand().equals("DELETE")) {
+                begin--;
+                str_word.replace((begin * 3), ((begin * 3) + 1), "_");
+            } else if (e.getActionCommand().equals("ENTER")) {
+                String str = str_word.toString();
+                str = str.replace(" ", "");
+                if (hiddenWord.equals(str)) {
+                    JOptionPane.showMessageDialog(this, "Congrats you guessed the word");
+                    confirmExit();
+                } else {
+                    for (int j = 0; j < str.length(); j++) {
+                        if (hiddenWord.charAt(j) == str.charAt(j)) {
+                            word2 += "*  ";
+                        } else if (hiddenWord.indexOf(str.charAt(j)) != -1) {
+                            word2 += "+  ";
+                        } else {
+                            word2 += "x  ";
+                        }
+                    }
+
+                    clues.setText(word2);
+                    arr.get(index).setText("     "+str);
+                    index++;
+                    try {
+                        Thread.sleep(500);
+                    } catch (Exception o) {
+                    }
+                    str_word = new StringBuffer("");
+                    word2 = "";
+                    begin = 0;
+                    enter.setEnabled(false);
+                    playGame();
                 }
             } else {
-                for (int j = 0; j < str.length(); j++) {
-                    if (hiddenWord.charAt(j) == str.charAt(j)) {
-                        word2 += "*  ";
-                    } else if (hiddenWord.indexOf(str.charAt(j)) != -1) {
-                        word2 += "+  ";
-                    } else {
-                        word2 += "x  ";
-                    }
+                if (str_word.length() == 15 && begin < 5) {
+                    str_word.replace((begin * 3), ((begin * 3) + 1), letter);
+                    begin++;
                 }
-                clues.setText(word2);
-                arr.get(index).setText(str);
-                index++;
-                try{Thread.sleep(500);}catch (Exception o){}
-                str_word = new StringBuffer("");
-                word2 = "";
-                begin = 0;
-                enter.setEnabled(false);
-                playGame();
-            }
-        } else {
-            if (str_word.length() == 15 && begin < 5) {
-                str_word.replace((begin * 3), ((begin * 3) + 1), letter);
-                begin++;
-            }
 
-        }
-        word.setText(str_word.toString());
-        if (begin == 5) {
-            enter.setEnabled(true);
+            }
+            word.setText(str_word.toString());
+            if (begin == 5) {
+                enter.setEnabled(true);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Sorry you have used all of your chances \n the correct word is " + hiddenWord, "Information Message", JOptionPane.INFORMATION_MESSAGE);
+            confirmExit();
         }
 
+    }
+
+    public void confirmExit(){
+        int n = JOptionPane.showConfirmDialog(this, "Do you want to exit the game","OPTION", JOptionPane.YES_NO_OPTION);
+        if(n == 0){
+            System.exit(0);
+        }else{
+            this.dispose();
+            hiddenWord = "";
+            GuiWordle wordle = new GuiWordle();
+            wordle.playGame();
+        }
     }
 
     public static void main(String[] args) {
