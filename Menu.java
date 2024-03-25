@@ -94,9 +94,11 @@ public class Menu extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e){
         Wordle wordle = new Wordle();
         if(e.getSource().equals(play)){
-            wordle.playGame();
+            new GuiWordle().playGame();
         }else if(e.getSource().equals(vi)){
-//            wordle.viewInstructions();
+             JOptionPane.showMessageDialog(this, "1. You are to guess a 5 letter word chosen at random" + "\n2. You can guess the word clicking the character from the virtual keypad" +
+                    "\n3. You have a maximum of 6 guesses" ,
+                    "Instructions", JOptionPane.INFORMATION_MESSAGE);
         }else if(e.getSource().equals(exit)){
             JOptionPane.showConfirmDialog(this,"Are you sure you want to exit", "Option", JOptionPane.YES_NO_OPTION);
             if(JOptionPane.YES_OPTION == 0){
