@@ -97,7 +97,11 @@ public class Menu extends JFrame implements ActionListener {
             new GuiWordle().playGame();
         }else if(e.getSource().equals(vi)){
              JOptionPane.showMessageDialog(this, "1. You are to guess a 5 letter word chosen at random" + "\n2. You can guess the word clicking the character from the virtual keypad" +
-                    "\n3. You have a maximum of 6 guesses" ,
+                    "\n3. You have a maximum of 6 guesses" +
+                    "\n Clues: " +
+                     "\n > If you see '*', the letter in the word you guessed is correct and in the right position\n" +
+                     "\n > If you see '+', the letter is in the word but in the wrong position.\n" +
+                     "\n > If you see 'x', the letter is not in the word.",
                     "Instructions", JOptionPane.INFORMATION_MESSAGE);
         }else if(e.getSource().equals(exit)){
             JOptionPane.showConfirmDialog(this,"Are you sure you want to exit", "Option", JOptionPane.YES_NO_OPTION);
