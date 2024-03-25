@@ -216,6 +216,7 @@ public class GuiWordle extends JFrame implements ActionListener {
             str_word.append("_  ");
         }
         word.setText(str_word.toString());
+        System.out.println(hiddenWord);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -229,7 +230,8 @@ public class GuiWordle extends JFrame implements ActionListener {
                 String str = str_word.toString();
                 str = str.replace(" ", "");
                 if (hiddenWord.equals(str)) {
-                    JOptionPane.showMessageDialog(this, "Congrats you guessed the word");
+                    int score = showScore(index);
+                    JOptionPane.showMessageDialog(this, "Congrats you guessed the word \n Score: " + score);
                     confirmExit();
                 } else {
                     for (int j = 0; j < str.length(); j++) {
@@ -283,6 +285,25 @@ public class GuiWordle extends JFrame implements ActionListener {
             GuiWordle wordle = new GuiWordle();
             wordle.playGame();
         }
+    }
+
+    public int showScore(int value){
+        int score = 0;
+        switch(value) {
+            case 0 ->
+                score = 30;
+            case 1 ->
+                score = 25;
+            case 2 ->
+                score = 20;
+            case 3 ->
+                score = 15;
+            case 4 ->
+                score = 10;
+            case 5 ->
+                score = 5;
+        }
+        return score;
     }
 
     public static void main(String[] args) {
