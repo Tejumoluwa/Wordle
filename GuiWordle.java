@@ -7,31 +7,34 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.Random;
+import javax.swing.BorderFactory;
+import java.awt.Color;
 
 public class GuiWordle extends JFrame implements ActionListener {
     private JPanel word_guessed, guessing, keypad, key1, key2, key3, notify, center;
     private JLabel wordle, clues, words, word, guess1, guess2, guess3, guess4, guess5, guess6;
-    private JButton a, b, c, d, e,f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, enter, delete;
+    private JButton a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, enter, delete;
 
-    String[] arr_words = {"CABIN", "EAGER", "HABIT", "LABOR", "SOBER", "OTHER", "STRAP", "AMBLE", "DRUNK", "LUNCH", "MAYBE", "EVERY", "ENTER" };
+    String[] arr_words = { "CABIN", "EAGER", "HABIT", "LABOR", "SOBER", "OTHER", "STRAP", "AMBLE", "DRUNK", "LUNCH",
+            "MAYBE", "EVERY", "ENTER" };
     StringBuffer str_word;
-    int lives = 6, rnd, index =0;
+    int lives = 6, rnd, index = 0;
     Random rd;
     int begin = 0;
-    String hiddenWord, word2 = "";
+    String hiddenWord, word2 = "", check;
     ArrayList<JLabel> arr;
 
-    public GuiWordle(){
+    public GuiWordle() {
         center = new JPanel();
         center.setLayout(new GridLayout(1, 2));
         notify = new JPanel();
         notify.setLayout(new FlowLayout());
         wordle = new JLabel("Wordle");
         wordle.setFont(new Font("Serif", Font.BOLD, 35));
-        wordle.setForeground(new Color(125,89,100));
+        wordle.setForeground(new Color(125, 89, 100));
 
         guessing = new JPanel();
-//        guessing.setBackground(new Color(255, 0, 0));
+        // guessing.setBackground(new Color(255, 0, 0));
         GridBagConstraints gc1 = new GridBagConstraints();
         guessing.setLayout(new GridBagLayout());
         clues = new JLabel();
@@ -39,7 +42,7 @@ public class GuiWordle extends JFrame implements ActionListener {
         gc1.gridx = 5;
         gc1.gridy = 5;
         guessing.add(clues, gc1);
-        clues.setSize(100,0);
+        clues.setSize(100, 0);
         word = new JLabel();
         word.setFont(new Font("Serif", Font.BOLD, 25));
         gc1.gridx = 5;
@@ -78,8 +81,15 @@ public class GuiWordle extends JFrame implements ActionListener {
         keypad = new JPanel();
         GridBagConstraints gc = new GridBagConstraints();
         keypad.setLayout(new GridBagLayout());
-        keypad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0,255,0)));
 
+        // Saintcoded comment: wrong implemantation changed from:
+        // javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 255, 0) to:
+        // BorderFactory.createLineBorder(new Color(0, 255, 0)
+
+        // Saintcoded comment: import the package javax.swing.BorderFactory; then use
+        // BorderFactory.createLineBorder same for Color class import java.awt.Color;
+
+        keypad.setBorder(BorderFactory.createLineBorder(new Color(0, 255, 0)));
         key1 = new JPanel();
         key1.setLayout(new FlowLayout());
         key1.add(q);
@@ -147,7 +157,7 @@ public class GuiWordle extends JFrame implements ActionListener {
         words = new JLabel("Words Guessed");
         words.setFont(new Font("Serif", Font.BOLD, 25));
         word_guessed.add(words);
-        word_guessed.setLayout(new GridLayout(7,1));
+        word_guessed.setLayout(new GridLayout(7, 1));
         word_guessed.add(guess1);
         word_guessed.add(guess2);
         word_guessed.add(guess3);
@@ -202,6 +212,38 @@ public class GuiWordle extends JFrame implements ActionListener {
         x.addActionListener(this);
         y.addActionListener(this);
         z.addActionListener(this);
+
+        // Saintcoded Comment: Set button focus this method is wrong but due to the way
+        // you gui was created i had no option
+
+        a.setFocusable(false);
+        b.setFocusable(false);
+        c.setFocusable(false);
+        d.setFocusable(false);
+        e.setFocusable(false);
+        f.setFocusable(false);
+        g.setFocusable(false);
+        h.setFocusable(false);
+        i.setFocusable(false);
+        j.setFocusable(false);
+        k.setFocusable(false);
+        l.setFocusable(false);
+        m.setFocusable(false);
+        n.setFocusable(false);
+        o.setFocusable(false);
+        p.setFocusable(false);
+        q.setFocusable(false);
+        r.setFocusable(false);
+        s.setFocusable(false);
+        t.setFocusable(false);
+        u.setFocusable(false);
+        v.setFocusable(false);
+        w.setFocusable(false);
+        x.setFocusable(false);
+        y.setFocusable(false);
+        z.setFocusable(false);
+        delete.setFocusable(false);
+        enter.setFocusable(false);
         enter.addActionListener(this);
         delete.addActionListener(this);
         enter.setEnabled(false);
@@ -211,22 +253,34 @@ public class GuiWordle extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
     }
 
-    public void playGame(){
-        for(int i = 0; i < 5; i++){
+    public void playGame() {
+        for (int i = 0; i < 5; i++) {
             str_word.append("_  ");
         }
         word.setText(str_word.toString());
-        System.out.println(hiddenWord);
+        // System.out.println(hiddenWord);
     }
 
     public void actionPerformed(ActionEvent e) {
         String letter = e.getActionCommand();
         delete.setEnabled(true);
-        if(index != 6) {
-            if (e.getActionCommand().equals("DELETE")) {
-                begin--;
-                str_word.replace((begin * 3), ((begin * 3) + 1), "_");
-            } else if (e.getActionCommand().equals("ENTER")) {
+        if (index != 6) {
+            if (letter.equals("DELETE")) {
+
+                // Saintcoded Comment: disable delete button if there is no entry or entry was
+                // deleted
+
+                check = str_word.substring(0, 1);
+                if (!(check.equals("_"))) {
+                    begin--;
+                    str_word.replace((begin * 3), ((begin * 3) + 1), "_");
+                    check = str_word.substring(0, 1);
+                    if (check.equals("_")) {
+                        delete.setEnabled(false);
+                    }
+                }
+
+            } else if (letter.equals("ENTER")) {
                 String str = str_word.toString();
                 str = str.replace(" ", "");
                 if (hiddenWord.equals(str)) {
@@ -245,7 +299,7 @@ public class GuiWordle extends JFrame implements ActionListener {
                     }
 
                     clues.setText(word2);
-                    arr.get(index).setText("     "+str);
+                    arr.get(index).setText("     " + str);
                     index++;
                     try {
                         Thread.sleep(500);
@@ -264,22 +318,29 @@ public class GuiWordle extends JFrame implements ActionListener {
                 }
 
             }
+
             word.setText(str_word.toString());
             if (begin == 5) {
                 enter.setEnabled(true);
+                // Saintcoded Comment: disable enter button if entry not equals to 5
+            } else {
+                enter.setEnabled(false);
             }
-        }else{
-            JOptionPane.showMessageDialog(this, "Sorry you have used all of your chances \n the correct word is " + hiddenWord, "Information Message", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Sorry you have used all of your chances \n the correct word is " + hiddenWord,
+                    "Information Message", JOptionPane.INFORMATION_MESSAGE);
             confirmExit();
         }
 
     }
 
-    public void confirmExit(){
-        int n = JOptionPane.showConfirmDialog(this, "Do you want to exit the game","OPTION", JOptionPane.YES_NO_OPTION);
-        if(n == 0){
+    public void confirmExit() {
+        int n = JOptionPane.showConfirmDialog(this, "Do you want to exit the game", "OPTION",
+                JOptionPane.YES_NO_OPTION);
+        if (n == 0) {
             System.exit(0);
-        }else{
+        } else {
             this.dispose();
             hiddenWord = "";
             GuiWordle wordle = new GuiWordle();
@@ -287,9 +348,9 @@ public class GuiWordle extends JFrame implements ActionListener {
         }
     }
 
-    public int showScore(int value){
+    public int showScore(int value) {
         int score = 0;
-        switch(value) {
+        switch (value) {
             case 0 ->
                 score = 30;
             case 1 ->
@@ -305,7 +366,6 @@ public class GuiWordle extends JFrame implements ActionListener {
         }
         return score;
     }
-
     public static void main(String[] args) {
         GuiWordle wordle = new GuiWordle();
         wordle.playGame();
